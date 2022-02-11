@@ -1,24 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Managed Play Iframe</title>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script>
-        gapi.load('gapi.iframes', function() {
-          var options = {
-            'url': 'https://play.google.com/work/embedded/search?token=web_token&mode=SELECT',
-            'where': document.getElementById('container'),
-            'attributes': { style: 'width: 600px; height:1000px', scrolling: 'yes'}
-          }
-      
-          var iframe = gapi.iframes.getContext().openChild(options);
-        });
-      </script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans">
+  <script>
+    window.onload = function () {
+      var url = new URL(window.location.href);
+
+      gapi.load('gapi.iframes', function() {
+        var options = {
+          'url': 'https://play.google.com/work/embedded/search' + url.search,
+          'where': document.getElementById('container'),
+          'attributes': { style: 'width: 1200px; height:800px', scrolling: 'yes'}
+        }
+
+        var iframe = gapi.iframes.getContext().openChild(options);
+
+        iframe.register('onproductselect', function(event) {
+          console.log(event);
+          document.getElementById("package_name").innerHTML = event.packageName;
+          document.getElementById("package_name_container").style.visibility = "visible";
+          document.getElementById("container").style.visibility = "hidden";
+        }, gapi.iframes.CROSS_ORIGIN_IFRAMES_FILTER);
+      });
+    };
+  </script>
 </head>
 <body>
-    <div id="container"></div>
+  <div style="font-family: 'Google Sans';">
+    <div style="margin-top: 20px; font-size: 30px; text-align: center;">Managed Google Play iframe</div>
+    <div id="package_name_container" style="visibility: hidden; margin-top: 30px; text-align: center; font-size: 20px;">Your app package name is <span id="package_name" style="font-weight: bold; user-select: all;"></span></div>
+    <div id="container" style="margin: auto; border-style: solid; border-color: #aaa; width: 1200px"></div>
+  </div>
 </body>
 </html>
