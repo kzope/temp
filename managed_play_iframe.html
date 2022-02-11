@@ -18,11 +18,17 @@
               }
 
               var iframe = gapi.iframes.getContext().openChild(options);
+                
+                iframe.register('onproductselect', function(event) {
+                  document.getElementById("package_name_container").style.visibility = "visible";
+                 document.getElementById("container").style.visibility = "hidden";
+                }, gapi.iframes.CROSS_ORIGIN_IFRAMES_FILTER);
             });   
         }
       </script>
 </head>
 <body>
+        <div id="package_name_container" style="visibility: hidden; margin-top: 30px; text-align: center; font-size: 20px;">Your app package name is <span id="package_name" style="font-weight: bold; user-select: all;"></span></div>
     <div id="container" style="margin: auto; border-style: solid; border-color: #aaa; width: 1200px"></div>
 </body>
 </html>
